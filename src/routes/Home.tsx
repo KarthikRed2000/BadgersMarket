@@ -1,6 +1,6 @@
 export default function Home() {
     return (
-        <div className='p-5 bg-primary text-white' style={{ backgroundImage: 'url(/assets/images/jumbotron.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '300px' }}>
+        <div className='p-5 bg-primary text-white' style={{ backgroundImage: 'url(/images/jumbotron.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '300px' }}>
             <div className="container">
                 <div className="row row-header">
                     <div className="col-12 col-sm-6">
