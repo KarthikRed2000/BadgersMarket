@@ -1,49 +1,65 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { supabase } from '../services/supabaseClient'
-
+import { Alert } from 'reactstrap'
+import HCaptcha from '@hcaptcha/react-hcaptcha'
+import { hCaptchaSiteKey } from '../constants/EnvKeys'
 interface SignUpProps {
   toggle: () => void,
   toggleAlert: () => void
 }
 
 export default function SignUp({ toggle, toggleAlert }: SignUpProps) {
+  const sitekey = hCaptchaSiteKey
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [contactNumber, setContactNumber] = useState('')
   const [name, setName] = useState('')
+  const [visible, setVisible] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | undefined>()
+  const captcha = useRef<HCaptcha>(null)
 
   const handleSignUp = async () => {
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-      if (error) {
-        console.error(error);
-        return;
-      }
-      if (data.user) {
-        const { error: insertError } = await supabase.from('users').insert([
-          {
-            id: data.user.id,
-            email,
-            username: name,
-            contact_number: contactNumber,
-          },
-        ]);
-        if (insertError) {
-          console.error(insertError);
-        } else {
-          toggle();
-          toggleAlert();
+    if (email.endsWith('@wisc.edu')) {
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { captchaToken }
+        });
+        if (error) {
+          return;
         }
+        if (data.user) {
+          const { error: insertError } = await supabase.from('users').insert([
+            {
+              id: data.user.id,
+              email,
+              username: name,
+              contact_number: contactNumber,
+            },
+          ]);
+          if (insertError) {
+            console.error(insertError);
+          } else {
+            toggle();
+            toggleAlert();
+          }
+        }
+      } catch (err) {
+        console.error('Unexpected error:', err);
       }
-    } catch (err) {
-      console.error('Unexpected error:', err);
+    } else {
+      setVisible(true);
+    }
+    if (captcha.current) {
+      captcha.current.resetCaptcha();
     }
   }
   return (
     <div style={{ maxWidth: 400, margin: '0 auto', padding: '2rem' }}>
+      <Alert color="danger" isOpen={visible} toggle={() => setVisible(false)}>
+        Please use only your wisc.edu email address.
+      </Alert>
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -103,6 +119,11 @@ export default function SignUp({ toggle, toggleAlert }: SignUpProps) {
             placeholder="Contact Number"
           />
         </div>
+        <HCaptcha
+          ref={captcha}
+          sitekey={sitekey}
+          onVerify={token => setCaptchaToken(token)}
+        />
         <button type="submit" style={{ width: '100%' }}>
           Sign Up
         </button>

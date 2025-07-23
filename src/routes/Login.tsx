@@ -1,28 +1,32 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { supabase } from '../services/supabaseClient';
+import { hCaptchaSiteKey } from '../constants/EnvKeys';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 interface LoginProps {
     toggle: () => void;
 }
 
 const Login: React.FC<LoginProps> = ({ toggle }) => {
+    const siteKey = hCaptchaSiteKey
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<Error | null>(null);
+    const [captchaToken, setCaptchaToken] = useState<string | undefined>();
+    const captcha = useRef<HCaptcha>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password,
+            options: { captchaToken }
         });
         if (data.user) {
-            console.log('Login successful:', data);
             toggle();
         }
         if (error) {
             setError(error);
-            console.error('Login error:', error);
         }
     };
 
@@ -56,6 +60,10 @@ const Login: React.FC<LoginProps> = ({ toggle }) => {
                         style={{ width: '100%' }}
                     />
                 </div>
+                <HCaptcha 
+                ref={captcha}
+                sitekey={siteKey} 
+                onVerify={token => setCaptchaToken(token)} />
                 <button type="submit" style={{ width: '100%' }}>Login</button>
             </form>
         </div>
