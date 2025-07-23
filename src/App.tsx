@@ -5,6 +5,8 @@ import PostAd from './routes/PostAd'
 import ViewAd from './routes/ViewAd'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import ProtectedRoute from './components/ProtectedRoute'
+import Dashboard from './routes/Dashboard'
 
 function App() {
   return (
@@ -13,8 +15,9 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<Home />}/>
-        <Route path="/post" element={<PostAd />} />
-        <Route path="/ad/:id" element={<ViewAd />} />
+        <Route path="/post" element={<ProtectedRoute><PostAd /></ProtectedRoute>} />
+        <Route path="/ad/:id" element={<ProtectedRoute><ViewAd /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       </Routes>
     </Router>
     <Footer />
