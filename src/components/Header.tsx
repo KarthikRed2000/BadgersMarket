@@ -30,7 +30,7 @@ export default function Header() {
             </Alert>
             <Navbar dark expand="md">
                 <NavbarBrand className="mr-auto col-3" href="/">
-                    <img src="src/assets/images/wisc-logo.png" style={{ height: '20%', width: '20%' }} alt="Badger's Market" />
+                    <img src="/images/wisc-logo.png" style={{ height: '20%', width: '20%' }} alt="Badger's Market" />
                     Badger's Market
                 </NavbarBrand>
                 <NavbarToggler onClick={toggleNav} />
