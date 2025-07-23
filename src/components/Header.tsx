@@ -3,8 +3,12 @@ import { NavLink } from 'react-router-dom';
 import { Alert, Button, Collapse, Modal, ModalBody, ModalHeader, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap';
 import SignUp from '../routes/SignUp';
 import Login from '../routes/Login';
+import { useAuth } from '../context/AuthContext';
+import { supabase } from '../services/supabaseClient';
 
 export default function Header() {
+    const auth = useAuth();
+    const session = auth?.session;
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [visible, setVisible] = useState(false);
@@ -41,20 +45,39 @@ export default function Header() {
                                 <span className="fa fa-home fa-lg"></span>Home
                             </NavLink>
                         </NavItem>
-                        <NavItem className='m-1 me-5'>
-                            <NavLink className='nav-link' to="/post">
-                                <span className="fa fa-plus fa-lg"></span>Post Ad
-                            </NavLink>
-                        </NavItem>
-                        <NavItem className='m-1 me-5'>
-                            <NavLink className='nav-link' to="/dashboard">
-                                <span className="fa fa-dashboard fa-lg"></span>Dashboard
-                            </NavLink>
-                        </NavItem>
+                        {session && session.user && (
+                        <><NavItem className='m-1 me-5'>
+                                <NavLink className='nav-link' to="/post">
+                                    <span className="fa fa-plus fa-lg"></span>Post Ad
+                                </NavLink>
+                            </NavItem><NavItem className='m-1 me-5'>
+                                    <NavLink className='nav-link' to="/dashboard">
+                                        <span className="fa fa-dashboard fa-lg"></span>Dashboard
+                                    </NavLink>
+                                </NavItem></>
+                        )}
                     </Nav>
                 </Collapse>
                 <Nav className="m-1 ml-auto" navbar>
-                    <NavItem className='m-1 me-5'>
+                    {session && session.user ? (
+                        <>
+                            <NavItem className='m-1 me-5'>
+                                <NavLink className='nav-link' to="/dashboard">
+                                    <span className="fa fa-user fa-lg"></span>{session.user.email}
+                                </NavLink>
+                            </NavItem>
+                            <NavItem className='m-1 me-5'>
+                                <Button
+                                    style={{ backgroundColor: 'white', color: '#c5050c', width: 'fit-content' }}
+                                    size="lg"
+                                    onClick={() => supabase.auth.signOut()}
+                                >
+                                    <span className="fa fa-sign-out fa-lg w-auto m-1"></span>Logout
+                                </Button>
+                            </NavItem>
+                        </>
+                    ):(<>
+                        <NavItem className='m-1 me-5'>
                         <Button
                             style={{ backgroundColor: 'white', color: '#c5050c', width: 'fit-content' }}
                             size="lg"
@@ -63,6 +86,8 @@ export default function Header() {
                             <span className="fa fa-sign-in fa-lg w-auto m-1"></span>Login/SignUp
                         </Button>
                     </NavItem>
+                    </>)}
+                    
                 </Nav>
             </Navbar>
             <Modal isOpen={isModalOpen} toggle={toggleModal}>
