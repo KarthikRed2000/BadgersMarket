@@ -9,5 +9,3 @@ export const appId = import.meta.env.VITE_FIREBASE_APP_ID
 export const measurementId = import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 export const hCaptchaSecret = import.meta.env.VITE_H_CAPTCHA_SECRET
 export const hCaptchaSiteKey = import.meta.env.VITE_H_CAPTCHA_SITE_KEY
-
-console.log('hCaptchaSiteKey:', hCaptchaSiteKey);
