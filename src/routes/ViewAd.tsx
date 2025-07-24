@@ -12,7 +12,7 @@ const ViewAd: React.FC = () => {
     };
 
     return (
-        <div style={{ maxWidth: 600, margin: '2rem auto', padding: '1rem', border: '1px solid #ddd', borderRadius: 8 }}>
+        <div className="screen" style={{ maxWidth: 600, margin: '2rem auto', padding: '1rem', border: '1px solid #ddd', borderRadius: 8 }}>
             <img src={ad.imageUrl} alt={ad.title} style={{ width: '100%', borderRadius: 8 }} />
             <h2>{ad.title}</h2>
             <p>{ad.description}</p>

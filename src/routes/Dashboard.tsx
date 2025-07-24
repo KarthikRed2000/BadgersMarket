@@ -2,7 +2,7 @@ import React from 'react';
 
 const Dashboard: React.FC = () => {
     return (
-        <div style={{ padding: '2rem' }}>
+        <div className="screen" style={{ padding: '2rem' }}>
             <h1>Dashboard</h1>
             <div style={{ display: 'flex', gap: '2rem', marginTop: '2rem' }}>
                 <div style={{ flex: 1, background: '#f5f5f5', padding: '1rem', borderRadius: '8px' }}>
