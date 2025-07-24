@@ -2,7 +2,7 @@ import { Card, CardBody, CardTitle, CardText, CardImg } from "reactstrap";
 
 export default function Home() {
     return (
-        <div>
+        <div className="screen">
             <div className='p-5 bg-primary text-white' style={{ backgroundImage: 'url(/images/jumbotron.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '300px' }}>
                 <div className="container">
                     <div className="row row-header">
@@ -40,10 +40,6 @@ export default function Home() {
                         </Card>
                     </div>
                     <div className='col-md-4'>
-                        {/* <h2>Welcome to Badger's Market</h2>
-                        <p>Your one-stop platform for buying and selling items within the campus community.</p>
-                        <p>Browse through our latest listings or post your own ads to connect with other students.</p>
-                        <p>Join us today and start trading!</p> */}
                         <Card>
                             <CardImg alt="Marketplace" src="/images/sell.jpg" />
                             <CardBody>
@@ -57,7 +53,7 @@ export default function Home() {
                 </div>
             </div>
             <div className="text-center" style={{ backgroundColor: '#373737', color: '#ddd' }}>
-                <div className="row">
+                <div className="row" style={{ padding: '10px' }}>
                     <div className="col-12">
                         <h2>Join the Community</h2>
                         <p>Sign up today to start buying and selling with fellow students!</p>

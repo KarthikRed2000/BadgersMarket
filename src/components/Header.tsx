@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Alert, Button, Collapse, Modal, ModalBody, ModalHeader, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap';
 import SignUp from '../routes/SignUp';
 import Login from '../routes/Login';
@@ -13,6 +13,7 @@ export default function Header() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [visible, setVisible] = useState(false);
     const [isLoginOpen, setIsLoginOpen] = useState(true);
+    const navigate = useNavigate();
 
     const toggleLogin = () => {
         setIsLoginOpen(!isLoginOpen);
@@ -26,6 +27,10 @@ export default function Header() {
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
     };
+    const handleSignOut = async () => {
+        await supabase.auth.signOut();
+        navigate('/');
+    }
 
     return (
         <div>
@@ -70,7 +75,7 @@ export default function Header() {
                                 <Button
                                     style={{ backgroundColor: 'white', color: '#c5050c', width: 'fit-content' }}
                                     size="lg"
-                                    onClick={() => supabase.auth.signOut()}
+                                    onClick={() => handleSignOut()}
                                 >
                                     <span className="fa fa-sign-out fa-lg w-auto m-1"></span>Logout
                                 </Button>
